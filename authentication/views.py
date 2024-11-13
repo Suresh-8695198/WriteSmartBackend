@@ -3,7 +3,10 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from firebase.firebase import add_student_to_firestore
+<<<<<<< HEAD
 from .otp_service import send_otp, verify_otp, check_contact_exists
+=======
+>>>>>>> de2f632cfe500c70e678ba15635cf77120f31139
 
 @csrf_exempt  # This is to bypass CSRF token validation for testing
 def submit_student_form(request):
@@ -23,6 +26,7 @@ def submit_student_form(request):
                 'contact_number': request.POST.get('contact_number'),
             }
 
+<<<<<<< HEAD
         # Check if the contact number is already registered
         contact_number = data.get('contact_number')
         if check_contact_exists(contact_number):
@@ -95,3 +99,12 @@ def verify_otp_view(request):
 
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
+=======
+        # Process the data and add it to Firebase
+        add_student_to_firestore(data)
+
+        return JsonResponse({'message': 'Student added successfully'})
+
+    else:
+        return JsonResponse({'message': 'Invalid request method'}, status=405)
+>>>>>>> de2f632cfe500c70e678ba15635cf77120f31139

@@ -39,7 +39,24 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authentication',
+<<<<<<< HEAD
 ]
+=======
+     'cloudinary',
+    'cloudinary_storage', 
+    'rest_framework', 
+    ]
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dkvmv6tgv',      # Replace with your Cloudinary Cloud Name
+    'API_KEY': '537917837548223',            # Replace with your API Key
+    'API_SECRET': 'SAfU8a-NJxglp2IvAaMx_PUGs8o',      # Replace with your API Secret
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+>>>>>>> de2f632cfe500c70e678ba15635cf77120f31139
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -143,4 +160,7 @@ firebase_cred_path = os.path.join(BASE_DIR, 'firebase', 'firebase-admin-sdk.json
 if not firebase_admin._apps:
     cred = credentials.Certificate(firebase_cred_path)
     firebase_admin.initialize_app(cred)
+<<<<<<< HEAD
 
+=======
+>>>>>>> de2f632cfe500c70e678ba15635cf77120f31139
