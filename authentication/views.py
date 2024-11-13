@@ -1,18 +1,31 @@
+# authentication/views.py
 from django.http import JsonResponse
-from firebase.firebase import create_firebase_user, get_firebase_user
+from django.views.decorators.csrf import csrf_exempt
+import json
+from firebase.firebase import add_student_to_firestore
 
+@csrf_exempt  # This is to bypass CSRF token validation for testing
+def submit_student_form(request):
+    if request.method == 'POST':
+        if request.content_type == 'application/json':
+            # Parse JSON data from the request
+            data = json.loads(request.body)
+        else:
+            # Handle form data (if sent as form data)
+            data = {
+                'name': request.POST.get('name'),
+                'college_name': request.POST.get('college_name'),
+                'dob': request.POST.get('dob'),
+                'register_number': request.POST.get('register_number'),
+                'disability_type': request.POST.get('disability_type'),
+                'exam_mode': request.POST.get('exam_mode'),
+                'contact_number': request.POST.get('contact_number'),
+            }
 
+        # Process the data and add it to Firebase
+        add_student_to_firestore(data)
 
-# Test Firebase connection by creating a user
-def test_firebase_connection(request):
-    # Replace with a test email and password
-    email = 'testuser@example.com'
-    password = 'TestPassword123'
-    
-    # Attempt to create a user in Firebase
-    user = create_firebase_user(email, password)
-    
-    if isinstance(user, str):  # If an error occurred, return it
-        return JsonResponse({'error': user}, status=400)
+        return JsonResponse({'message': 'Student added successfully'})
+
     else:
-        return JsonResponse({'message': 'User created successfully!', 'uid': user.uid})
+        return JsonResponse({'message': 'Invalid request method'}, status=405)

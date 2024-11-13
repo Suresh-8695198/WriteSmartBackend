@@ -1,20 +1,26 @@
-from firebase_admin import auth
 
-# Create a new Firebase user
-def create_firebase_user(email, password):
-    try:
-        user = auth.create_user(
-            email=email,
-            password=password
-        )
-        return user
-    except Exception as e:
-        return str(e)
+from firebase_admin import firestore
 
-# Retrieve Firebase user by UID
-def get_firebase_user(uid):
-    try:
-        user = auth.get_user(uid)
-        return user
-    except Exception as e:
-        return str(e)
+# Firestore client
+db = firestore.client()
+def add_student_to_firestore(student_data):
+    """
+    Add student data to Firestore
+    :param student_data: Dictionary containing student data
+    :return: Firestore document reference
+    """
+    student_ref = db.collection('students').add(student_data)
+    return student_ref
+
+def get_student_by_register_number(register_number):
+    """
+    Fetch student data by register number
+    :param register_number: The student's register number
+    :return: student data or None if not found
+    """
+    students_ref = db.collection('students')
+    query = students_ref.where('register_number', '==', register_number).get()
+
+    if query:
+        return query[0].to_dict()
+    return None
