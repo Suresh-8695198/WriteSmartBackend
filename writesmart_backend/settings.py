@@ -42,7 +42,7 @@ INSTALLED_APPS = [
      'cloudinary',
     'cloudinary_storage', 
     'rest_framework', 
-    ]
+]
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
@@ -156,3 +156,4 @@ firebase_cred_path = os.path.join(BASE_DIR, 'firebase', 'firebase-admin-sdk.json
 if not firebase_admin._apps:
     cred = credentials.Certificate(firebase_cred_path)
     firebase_admin.initialize_app(cred)
+

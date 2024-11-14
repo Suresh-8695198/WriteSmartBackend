@@ -1,6 +1,13 @@
+import firebase_admin
+from firebase_admin import credentials, firestore
 
-from firebase_admin import firestore
-
+# Initialize Firebase Admin SDK
+cred = credentials.Certificate("firebase\\firebase-admin-sdk.json")
+try:
+    firebase_admin.get_app()
+except ValueError:
+    # Initialize the Firebase app only if it hasn't been initialized already
+    firebase_admin.initialize_app(credentials.Certificate(cred), name='app1')
 # Firestore client
 db = firestore.client()
 def add_student_to_firestore(student_data):
