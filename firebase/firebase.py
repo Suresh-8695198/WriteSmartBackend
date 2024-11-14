@@ -1,18 +1,16 @@
-
-<<<<<<< HEAD
 import firebase_admin
 from firebase_admin import credentials, firestore
 
 # Initialize Firebase Admin SDK
-cred = credentials.Certificate("C:\\Users\\Welcome\\Desktop\\demopro\\WriteSmartBackend-harigayathiri\\WriteSmartBackend-harigayathiri\\firebase\\firebase-admin-sdk.json")
+cred = credentials.Certificate("firebase\\firebase-admin-sdk.json")
 try:
     firebase_admin.get_app()
 except ValueError:
     # Initialize the Firebase app only if it hasn't been initialized already
-    firebase_admin.initialize_app(credentials.Certificate(cred_path), name='app1')
-=======
+    firebase_admin.initialize_app(credentials.Certificate(cred), name='app1')
+
 from firebase_admin import firestore
->>>>>>> de2f632cfe500c70e678ba15635cf77120f31139
+
 
 # Firestore client
 db = firestore.client()
