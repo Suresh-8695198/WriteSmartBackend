@@ -4,7 +4,7 @@ import json
 from firebase.firebase import add_student_to_firestore
 from .otp_service import send_otp, verify_otp, check_contact_exists
 from firebase.firebase import fetch_exam_questions
-
+from firebase.firebase import fetch_exam_questions, update_exam_answer
 @csrf_exempt  # Bypass CSRF for testing (remove for production)
 def submit_student_form(request):
     if request.method == 'POST':
@@ -96,3 +96,33 @@ def get_exam_questions(request):
     except Exception as e:
         # Handle any errors
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+
+
+# Fetch all exam questions
+def get_exam_questions(request):
+    if request.method == 'GET':
+        try:
+            questions = fetch_exam_questions()
+            return JsonResponse({'status': 'success', 'data': questions}, status=200)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+# Update the answer for a specific question
+@csrf_exempt
+def write_answer(request):
+    if request.method == 'POST':
+        try:
+            # Parse request body
+            body = json.loads(request.body)
+            doc_id = body.get('doc_id')
+            answer = body.get('answer')
+
+            if not doc_id or not answer:
+                return JsonResponse({'status': 'error', 'message': 'doc_id and answer are required'}, status=400)
+
+            # Update answer in Firestore
+            update_exam_answer(doc_id, answer)
+            return JsonResponse({'status': 'success', 'message': 'Answer updated successfully'}, status=200)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)

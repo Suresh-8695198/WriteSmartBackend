@@ -1,6 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials, firestore
 
+
 # Initialize Firebase Admin SDK
 cred = credentials.Certificate("firebase\\firebase-admin-sdk.json")
 try:
@@ -59,3 +60,25 @@ def fetch_exam_questions():
         })
     
     return questions
+
+
+
+def update_exam_answer(doc_id, answer):
+    """
+    Update the answer for a specific question in Firestore.
+    """
+    try:
+        question_ref = db.collection('exam_questions').document(doc_id)
+        
+        # Check if the document exists
+        if not question_ref.get().exists:
+            raise ValueError(f"No document found with ID: {doc_id}")
+        
+        # Update the document with the answer field
+        question_ref.update({'answer': answer})
+        print(f"Answer successfully updated for doc_id: {doc_id}")
+    except Exception as e:
+        print(f"Error in update_exam_answer: {e}")
+        raise
+
+
