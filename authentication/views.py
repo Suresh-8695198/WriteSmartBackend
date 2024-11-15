@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from firebase.firebase import add_student_to_firestore
 from .otp_service import send_otp, verify_otp, check_contact_exists
-
+from firebase.firebase import fetch_exam_questions
 
 @csrf_exempt  # Bypass CSRF for testing (remove for production)
 def submit_student_form(request):
@@ -83,3 +83,16 @@ def verify_otp_view(request):
 
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
+
+# authentication/views.py
+
+
+def get_exam_questions(request):
+    try:
+        # Fetch questions from Firebase
+        questions = fetch_exam_questions()
+        # Return questions in JSON format
+        return JsonResponse({'status': 'success', 'data': questions}, status=200)
+    except Exception as e:
+        # Handle any errors
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
